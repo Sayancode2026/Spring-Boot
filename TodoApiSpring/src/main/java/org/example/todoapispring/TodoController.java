@@ -23,17 +23,19 @@ public class TodoController {
         todoList.add(new Todo(1, false, "Todo 1", 1000));
         todoList.add(new Todo(2, true, "Todo 2", 1001));
     }
+    //For filtration, we use QueryParam @RequestParam
 
-//GET
+    //GET
     @GetMapping("/")
-    public ResponseEntity<List<Todo>> getTodos() {
+    public ResponseEntity<List<Todo>> getTodos(@RequestParam(required = false,defaultValue = "true") Boolean isCompleted) {
+        System.out.println("Incoming Query Param is : "+ isCompleted);
         return ResponseEntity.status(HttpStatus.OK).body(todoList);
     }
-//POST
+    //POST
     @PostMapping("/")
-  //  @ResponseStatus(HttpStatus.CREATED) //show the status 201 CREATED explicitly
+    //  @ResponseStatus(HttpStatus.CREATED) //show the status 201 CREATED explicitly
     public ResponseEntity<Todo> createTodo(@RequestBody Todo newTodo) {//@RequestBody tells whatever the incoming request body in the http request that body should be accesable inside this createTodo method
-      //ResponseEntiity class manually handle the status of the http whatever you sending to the client
+        //ResponseEntiity class manually handle the status of the http whatever you sending to the client
 
         todoList.add(newTodo);
         return ResponseEntity.status(HttpStatus.CREATED).body(newTodo);
@@ -47,10 +49,10 @@ public class TodoController {
                 return ResponseEntity.ok(todo);
             }
         }
-       return  ResponseEntity.notFound().build();
+        return  ResponseEntity.notFound().build();
     }
 
-//DELETE
+    //DELETE
     @DeleteMapping("{todoId}")
     public ResponseEntity<Void> deleteTodo(@PathVariable Long todoId) {
 
@@ -93,3 +95,11 @@ public class TodoController {
     }
 
 }
+
+/*
+ * Link:https://www.geeksforgeeks.org/springboot/spring-boot-pathvariable-and-requestparam-annotations/
+ * Link:https://www.baeldung.com/spring-request-param
+ * Link:https://blog.masteringbackend.com/mastering-request-param-in-spring-boot
+ *
+ *
+ *  */
